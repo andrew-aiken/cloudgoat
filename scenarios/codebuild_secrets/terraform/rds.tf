@@ -63,7 +63,7 @@ resource "aws_db_instance" "psql_rds" {
   engine               = "postgres"
   engine_version       = "16.2"
   port                 = "5432"
-  instance_class       = "db.m5.large"
+  instance_class       = "db.t3.micro"
   db_subnet_group_name = aws_db_subnet_group.rds_subnet_group.id
   multi_az             = false
   username             = var.rds_username

@@ -1,7 +1,7 @@
 #IAM Role for AWS CodeBuild Project
 resource "aws_iam_role" "codebuild_role" {
   name        = "code-build-cg-${var.cgid}-service-role"
-  description = ""
+  description = "Permissions for CloudGoat codebuilder"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -50,7 +50,6 @@ resource "aws_iam_role" "codebuild_role" {
   }
 }
 
-#AWS CodeBuildProjects
 resource "aws_codebuild_project" "codebuild_project" {
   name          = "cg-codebuild-${var.cgid}"
   build_timeout = 20

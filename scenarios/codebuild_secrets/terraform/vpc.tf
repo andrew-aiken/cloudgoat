@@ -7,13 +7,13 @@ resource "aws_vpc" "vpc" {
   }
 }
 
-#Internet Gateway
 resource "aws_internet_gateway" "internet_gateway" {
   vpc_id = aws_vpc.vpc.id
   tags = {
     Name = "CloudGoat ${var.cgid} Internet Gateway"
   }
 }
+
 #Public Subnets
 resource "aws_subnet" "public_subnet_1" {
   availability_zone = "${var.region}a"
@@ -31,6 +31,7 @@ resource "aws_subnet" "public_subnet_2" {
     Name = "CloudGoat ${var.cgid} Public Subnet #2"
   }
 }
+
 #Private Subnets
 resource "aws_subnet" "private_subnet_1" {
   availability_zone = "${var.region}a"
@@ -48,7 +49,7 @@ resource "aws_subnet" "private_subnet_2" {
     Name = "CloudGoat ${var.cgid} Private Subnet #2"
   }
 }
-#Public Subnet Routing Table
+
 resource "aws_route_table" "public_subnet" {
   vpc_id = aws_vpc.vpc.id
   route {
@@ -59,7 +60,7 @@ resource "aws_route_table" "public_subnet" {
     Name = "CloudGoat ${var.cgid} Route Table for Public Subnet"
   }
 }
-#Private Subnet Routing Table
+
 resource "aws_route_table" "private_subnet" {
   vpc_id = aws_vpc.vpc.id
   tags = {

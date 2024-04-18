@@ -8,7 +8,6 @@ variable "cgid" {
   type        = string
 }
 
-#Example: RDS PostgreSQL Instance Credentials
 variable "rds_username" {
   default     = "cgadmin"
   description = "Username for the RDS database"

@@ -1,6 +1,6 @@
 resource "aws_iam_role" "ec2_role" {
   name        = "cg-ec2-role-${var.cgid}"
-  description = ""
+  description = "Lambda permissions for CloadGoat EC2"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17",

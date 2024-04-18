@@ -1,5 +1,6 @@
 resource "aws_iam_user" "calrissian" {
-  name = "calrissian"
+  name          = "calrissian"
+  force_destroy = true
 }
 
 resource "aws_iam_access_key" "calrissian" {
@@ -7,7 +8,8 @@ resource "aws_iam_access_key" "calrissian" {
 }
 
 resource "aws_iam_user" "solo" {
-  name = "solo"
+  name          = "solo"
+  force_destroy = true
 }
 
 resource "aws_iam_access_key" "solo" {
@@ -17,7 +19,7 @@ resource "aws_iam_access_key" "solo" {
 #IAM User Policies
 resource "aws_iam_policy" "calrissian_policy" {
   name        = "cg-calrissian-policy-${var.cgid}"
-  description = "cg-calrissian-policy-${var.cgid}"
+  description = "Calrissian CloudGoat policy for accessing RDS"
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -48,7 +50,7 @@ resource "aws_iam_policy" "calrissian_policy" {
 
 resource "aws_iam_policy" "solo_policy" {
   name        = "cg-solo-policy-${var.cgid}"
-  description = "cg-solo-policy-${var.cgid}"
+  description = "Solo CloudGoat policy for CodeBuild and EC2"
 
   policy = jsonencode({
     Version = "2012-10-17"
