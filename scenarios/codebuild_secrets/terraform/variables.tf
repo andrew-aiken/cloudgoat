@@ -1,40 +1,59 @@
-#Required: AWS Profile
 variable "profile" {
+  description = "The AWS profile to use"
+  type        = string
+}
 
-}
-#Required: AWS Region
-variable "region" {
-  default = "us-east-1"
-}
-#Required: CGID Variable for unique naming
 variable "cgid" {
-
+  description = "CGID variable for unique naming"
+  type        = string
 }
+
 #Example: RDS PostgreSQL Instance Credentials
 variable "rds-username" {
-  default = "cgadmin"
+  default     = "cgadmin"
+  description = "Username for the RDS database"
+  type        = string
 }
+
 variable "rds-password" {
-  default = "wagrrrrwwgahhhhwwwrrggawwwwwwrr"
+  default     = "wagrrrrwwgahhhhwwwrrggawwwwwwrr"
+  description = "Password for the RDS database"
+  type        = string
 }
+
 variable "rds-database-name" {
-  default = "securedb"
+  default     = "securedb"
+  description = "Default database name for the RDS database"
+  type        = string
 }
-#SSH Public Key
-variable "ssh-public-key-for-ec2" {
-  default = "../cloudgoat.pub"
+
+variable "region" {
+  default = "us-east-1"
+  type    = string
 }
-#Required: User's Public IP Address(es)
+
 variable "cg_whitelist" {
-  default = "../whitelist.txt"
+  description = "User's public IP address(es)"
+  default     = ["0.0.0.0/0"]
+  type        = list(string)
 }
-#Stack Name
+
 variable "stack-name" {
-  default = "CloudGoat"
+  description = "Name of the stack"
+  default     = "CloudGoat"
+  type        = string
 }
-#Scenario Name
+
 variable "scenario-name" {
-  default = "codebuild-secrets"
+  description = "Name of the scenario"
+  default     = "codebuild-secrets"
+  type        = string
+}
+
+variable "ssh-public-key-for-ec2" {
+  default     = "../cloudgoat.pub"
+  description = "SSH Public Key for the EC2 instance"
+  type        = string
 }
 
 locals {
