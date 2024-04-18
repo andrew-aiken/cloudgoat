@@ -9,19 +9,19 @@ variable "cgid" {
 }
 
 #Example: RDS PostgreSQL Instance Credentials
-variable "rds-username" {
+variable "rds_username" {
   default     = "cgadmin"
   description = "Username for the RDS database"
   type        = string
 }
 
-variable "rds-password" {
+variable "rds_password" {
   default     = "wagrrrrwwgahhhhwwwrrggawwwwwwrr"
   description = "Password for the RDS database"
   type        = string
 }
 
-variable "rds-database-name" {
+variable "rds_database_name" {
   default     = "securedb"
   description = "Default database name for the RDS database"
   type        = string
@@ -50,7 +50,7 @@ variable "scenario-name" {
   type        = string
 }
 
-variable "ssh-public-key-for-ec2" {
+variable "ssh_public_key" {
   default     = "../cloudgoat.pub"
   description = "SSH Public Key for the EC2 instance"
   type        = string

@@ -1,7 +1,7 @@
 #AWS Account Id
-data "aws_caller_identity" "aws-account-id" {}
+data "aws_caller_identity" "aws_account" {}
 
-data "archive_file" "cg-lambda-function" {
+data "archive_file" "lambda_function" {
   type        = "zip"
   source_file = "../assets/lambda.py"
   output_path = "../assets/lambda.zip"

@@ -1,21 +1,21 @@
-resource "aws_iam_user" "cg-calrissian" {
+resource "aws_iam_user" "calrissian" {
   name = "calrissian"
 }
 
-resource "aws_iam_access_key" "cg-calrissian" {
-  user = aws_iam_user.cg-calrissian.name
+resource "aws_iam_access_key" "calrissian" {
+  user = aws_iam_user.calrissian.name
 }
 
-resource "aws_iam_user" "cg-solo" {
+resource "aws_iam_user" "solo" {
   name = "solo"
 }
 
-resource "aws_iam_access_key" "cg-solo" {
-  user = aws_iam_user.cg-solo.name
+resource "aws_iam_access_key" "solo" {
+  user = aws_iam_user.solo.name
 }
 
 #IAM User Policies
-resource "aws_iam_policy" "cg-calrissian-policy" {
+resource "aws_iam_policy" "calrissian_policy" {
   name        = "cg-calrissian-policy-${var.cgid}"
   description = "cg-calrissian-policy-${var.cgid}"
 
@@ -46,7 +46,7 @@ resource "aws_iam_policy" "cg-calrissian-policy" {
   })
 }
 
-resource "aws_iam_policy" "cg-solo-policy" {
+resource "aws_iam_policy" "solo_policy" {
   name        = "cg-solo-policy-${var.cgid}"
   description = "cg-solo-policy-${var.cgid}"
 
@@ -75,12 +75,12 @@ resource "aws_iam_policy" "cg-solo-policy" {
 }
 
 #User Policy Attachments
-resource "aws_iam_user_policy_attachment" "cg-calrissian-attachment" {
-  user       = aws_iam_user.cg-calrissian.name
-  policy_arn = aws_iam_policy.cg-calrissian-policy.arn
+resource "aws_iam_user_policy_attachment" "calrissian_attachment" {
+  user       = aws_iam_user.calrissian.name
+  policy_arn = aws_iam_policy.calrissian_policy.arn
 }
 
-resource "aws_iam_user_policy_attachment" "cg-solo-attachment" {
-  user       = aws_iam_user.cg-solo.name
-  policy_arn = aws_iam_policy.cg-solo-policy.arn
+resource "aws_iam_user_policy_attachment" "solo_attachment" {
+  user       = aws_iam_user.solo.name
+  policy_arn = aws_iam_policy.solo_policy.arn
 }

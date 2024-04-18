@@ -1,4 +1,4 @@
-resource "aws_iam_role" "cg-ec2-role" {
+resource "aws_iam_role" "ec2_role" {
   name        = "cg-ec2-role-${var.cgid}"
   description = ""
 
@@ -16,13 +16,14 @@ resource "aws_iam_role" "cg-ec2-role" {
   })
 
   managed_policy_arns = [
-    aws_iam_policy.cg-ec2-role-policy.arn
+    aws_iam_policy.ec2_role_policy.arn
   ]
 }
 
-resource "aws_iam_policy" "cg-ec2-role-policy" {
+resource "aws_iam_policy" "ec2_role_policy" {
   name        = "cg-ec2-role-policy-${var.cgid}"
   description = "cg-ec2-role-policy-${var.cgid}"
+
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -39,15 +40,15 @@ resource "aws_iam_policy" "cg-ec2-role-policy" {
   })
 }
 
-resource "aws_iam_instance_profile" "cg-ec2-instance-profile" {
+resource "aws_iam_instance_profile" "ec2_instance_profile" {
   name = "cg-ec2-instance-profile-${var.cgid}"
-  role = aws_iam_role.cg-ec2-role.name
+  role = aws_iam_role.ec2_role.name
 }
 
-resource "aws_security_group" "cg-ec2-ssh-security-group" {
+resource "aws_security_group" "ec2_ssh" {
   name        = "cg-ec2-ssh-${var.cgid}"
   description = "CloudGoat ${var.cgid} Security Group for EC2 Instance over SSH"
-  vpc_id      = aws_vpc.cg-vpc.id
+  vpc_id      = aws_vpc.vpc.id
 
   ingress {
     from_port   = 22
@@ -70,21 +71,21 @@ resource "aws_security_group" "cg-ec2-ssh-security-group" {
   }
 }
 
-resource "aws_key_pair" "cg-ec2-key-pair" {
+resource "aws_key_pair" "ec2_key" {
   key_name   = "cg-ec2-key-pair-${var.cgid}"
-  public_key = file(var.ssh-public-key-for-ec2)
+  public_key = file(var.ssh_public_key)
 }
 
-resource "aws_instance" "cg-ubuntu-ec2" {
+resource "aws_instance" "ubuntu_ec2" {
   ami                         = data.aws_ami.ubuntu.id
   instance_type               = "t3.micro"
-  key_name                    = aws_key_pair.cg-ec2-key-pair.key_name
-  iam_instance_profile        = aws_iam_instance_profile.cg-ec2-instance-profile.name
-  subnet_id                   = aws_subnet.cg-public-subnet-1.id
+  key_name                    = aws_key_pair.ec2_key.key_name
+  iam_instance_profile        = aws_iam_instance_profile.ec2_instance_profile.name
+  subnet_id                   = aws_subnet.public_subnet_1.id
   associate_public_ip_address = true
 
   vpc_security_group_ids = [
-    aws_security_group.cg-ec2-ssh-security-group.id
+    aws_security_group.ec2_ssh.id
   ]
 
   root_block_device {
@@ -97,11 +98,11 @@ resource "aws_instance" "cg-ubuntu-ec2" {
         #!/bin/bash
         apt-get update
         apt-get install -y postgresql-client
-        psql postgresql://${var.rds-username}:${var.rds-password}@${aws_db_instance.cg-psql-rds.endpoint}/${var.rds-database-name} \
+        psql postgresql://${var.rds_username}:${var.rds_password}@${aws_db_instance.psql_rds.endpoint}/${var.rds_database_name} \
         -c "CREATE TABLE sensitive_information (name VARCHAR(100) NOT NULL, value VARCHAR(100) NOT NULL);"
-        psql postgresql://${var.rds-username}:${var.rds-password}@${aws_db_instance.cg-psql-rds.endpoint}/${var.rds-database-name} \
+        psql postgresql://${var.rds_username}:${var.rds_password}@${aws_db_instance.psql_rds.endpoint}/${var.rds_database_name} \
         -c "INSERT INTO sensitive_information (name,value) VALUES ('Key1','V\!C70RY-PvyOSDptpOVNX2JDS9K9jVetC1xI4gMO4');"
-        psql postgresql://${var.rds-username}:${var.rds-password}@${aws_db_instance.cg-psql-rds.endpoint}/${var.rds-database-name} \
+        psql postgresql://${var.rds_username}:${var.rds_password}@${aws_db_instance.psql_rds.endpoint}/${var.rds_database_name} \
         -c "INSERT INTO sensitive_information (name,value) VALUES ('Key2','V\!C70RY-JpZFReKtvUiWuhyPGF20m4SDYJtOTxws6');"
         EOF
 

@@ -1,5 +1,5 @@
 #IAM Role for AWS CodeBuild Project
-resource "aws_iam_role" "cg-codebuild-role" {
+resource "aws_iam_role" "codebuild_role" {
   name        = "code-build-cg-${var.cgid}-service-role"
   description = ""
 
@@ -23,7 +23,7 @@ resource "aws_iam_role" "cg-codebuild-role" {
         Version = "2012-10-17"
         Statement = [
           {
-            Effect   = "Allow"
+            Effect = "Allow"
             Action = [
               "logs:CreateLogGroup",
               "logs:CreateLogStream",
@@ -51,10 +51,10 @@ resource "aws_iam_role" "cg-codebuild-role" {
 }
 
 #AWS CodeBuildProjects
-resource "aws_codebuild_project" "cg-codebuild-project" {
+resource "aws_codebuild_project" "codebuild_project" {
   name          = "cg-codebuild-${var.cgid}"
   build_timeout = 20
-  service_role  = aws_iam_role.cg-codebuild-role.arn
+  service_role  = aws_iam_role.codebuild_role.arn
 
   environment {
     compute_type                = "BUILD_GENERAL1_SMALL"
@@ -64,13 +64,13 @@ resource "aws_codebuild_project" "cg-codebuild-project" {
     privileged_mode             = false
 
     environment_variable {
-      name  = "calrissian-aws-access-key"
-      value = aws_iam_access_key.cg-calrissian.id
+      name  = "AWS_ACCESS_KEY_ID"
+      value = aws_iam_access_key.calrissian.id
     }
 
     environment_variable {
-      name  = "calrissian-aws-secret-key"
-      value = aws_iam_access_key.cg-calrissian.secret
+      name  = "AWS_SECRET_ACCESS_KEY"
+      value = aws_iam_access_key.calrissian.secret
     }
   }
 

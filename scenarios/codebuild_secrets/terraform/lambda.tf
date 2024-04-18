@@ -1,4 +1,4 @@
-resource "aws_iam_role" "cg-lambda-role" {
+resource "aws_iam_role" "lambda_role" {
   name        = "cg-lambda-role-${var.cgid}-service-role"
   description = ""
 
@@ -16,18 +16,19 @@ resource "aws_iam_role" "cg-lambda-role" {
   })
 }
 
-resource "aws_lambda_function" "cg-lambda-function" {
+resource "aws_lambda_function" "lambda_function" {
   filename         = "../assets/lambda.zip"
   function_name    = "cg-lambda-${var.cgid}"
-  role             = aws_iam_role.cg-lambda-role.arn
+  role             = aws_iam_role.lambda_role.arn
   handler          = "lambda.handler"
-  source_code_hash = data.archive_file.cg-lambda-function.output_base64sha256
-  runtime          = "python3.9"
+  source_code_hash = data.archive_file.lambda_function.output_base64sha256
+  runtime          = "python3.12"
+
   environment {
     variables = {
-      DB_NAME     = var.rds-database-name
-      DB_USER     = var.rds-username
-      DB_PASSWORD = var.rds-password
+      DB_NAME     = var.rds_database_name
+      DB_USER     = var.rds_username
+      DB_PASSWORD = var.rds_password
     }
   }
 }
