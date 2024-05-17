@@ -1,45 +1,58 @@
-#Required: AWS Profile
 variable "profile" {
+  description = "The AWS profile to use"
+  type        = string
+}
 
-}
-#Required: AWS Region
-variable "region" {
-  default = "us-east-1"
-}
-#Required: CGID Variable for unique naming
 variable "cgid" {
+  description = "CGID variable for unique naming"
+  type        = string
+}
 
+variable "region" {
+  default     = "us-east-1"
+  description = "AWS Regions to place resources in"
+  type        = string
 }
-#Example: RDS PostgreSQL Instance Credentials
-variable "rds-username" {
-  default = "cgadmin"
-}
-variable "rds-password" {
-  default = "wagrrrrwwgahhhhwwwrrggawwwwwwrr"
-}
-variable "rds-database-name" {
-  default = "securedb"
-}
-#SSH Public Key
-variable "ssh-public-key-for-ec2" {
-  default = "../cloudgoat.pub"
-}
-#Required: User's Public IP Address(es)
+
+
 variable "cg_whitelist" {
-  default = "../whitelist.txt"
-}
-#Stack Name
-variable "stack-name" {
-  default = "CloudGoat"
-}
-#Scenario Name
-variable "scenario-name" {
-  default = "codebuild-secrets"
+  description = "User's public IP address(es)"
+  default     = ["0.0.0.0/0"]
+  type        = list(string)
 }
 
-locals {
-  # Ensure the bucket suffix doesn't contain invalid characters
-  # "Bucket names can consist only of lowercase letters, numbers, dots (.), and hyphens (-)."
-  # (per https://docs.aws.amazon.com/AmazonS3/latest/userguide/bucketnamingrules.html)
-  cgid_suffix = replace(var.cgid, "/[^a-z0-9-.]/", "-")
+variable "rds_username" {
+  default     = "cgadmin"
+  description = "Username to use for the RDS instance"
+  type        = string
+}
+
+variable "rds_password" {
+  default     = "wagrrrrwwgahhhhwwwrrggawwwwwwrr"
+  description = "Password to use for the RDS instance"
+  type        = string
+}
+
+variable "rds_database_name" {
+  default     = "securedb"
+  description = "Default database name for the RDS instance"
+  type        = string
+}
+
+variable "stack-name" {
+  description = "Name of the stack"
+  default     = "CloudGoat"
+  type        = string
+}
+
+variable "scenario-name" {
+  description = "Name of the scenario"
+  default     = "codebuild-secrets"
+  type        = string
+}
+
+variable "ssh_public_key" {
+  default     = "../cloudgoat.pub"
+  description = "Public key filename"
+  type        = string
 }
